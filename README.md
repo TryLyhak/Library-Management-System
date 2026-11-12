@@ -21,6 +21,46 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
+## Deploying to Vercel
+
+This project includes a Vercel PHP runtime configuration. Connect the repository to
+Vercel and deploy from the repository root. Vercel will install the Composer
+dependencies and build the Vite assets.
+
+Before deploying, add these environment variables in the Vercel project settings
+for Production, Preview, and Development as appropriate:
+
+```text
+APP_ENV=production
+APP_DEBUG=false
+APP_KEY=<generate locally with php artisan key:generate --show>
+APP_URL=https://<your-vercel-domain>
+
+DB_CONNECTION=pgsql
+DB_HOST=<postgres-host>
+DB_PORT=5432
+DB_DATABASE=<postgres-database>
+DB_USERNAME=<postgres-username>
+DB_PASSWORD=<postgres-password>
+DB_SSLMODE=require
+
+SESSION_DRIVER=database
+CACHE_STORE=database
+QUEUE_CONNECTION=database
+LOG_CHANNEL=stderr
+```
+
+Run the migrations against the production database before using the application:
+
+```bash
+php artisan migrate --force
+```
+
+SQLite and local filesystem storage are not suitable for production on Vercel:
+serverless instances are ephemeral. Use an external PostgreSQL database and an
+object-storage disk for uploaded files if file uploads are added later. Vercel
+does not provide persistent queue workers or scheduled processes.
+
 ## Learning Laravel
 
 Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
